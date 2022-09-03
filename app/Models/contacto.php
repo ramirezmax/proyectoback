@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class contacto extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'subject',
+        'cmessage',
+    ];
 }

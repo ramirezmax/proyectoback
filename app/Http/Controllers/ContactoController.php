@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\contacto;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
 
 class ContactoController extends Controller
 {
@@ -36,7 +38,36 @@ class ContactoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'subject' => 'required',
+            'cmessage' => 'required',
+        ]);
+
+        $contacto = Contacto::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'phone' => $request['phone'],
+            'subject' => $request['subject'],
+            'cmessage' => $request['cmessage'],
+        ]);
+
+        Mail::send(
+            'contact_email',
+            array(
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'phone' => $request->get('phone'),
+                'subject' => $request->get('subject'),
+                'cmessage' => $request->get('cmessage'),
+            ),
+            function ($sending) use ($request) {
+                $sending->from($request->email);
+                $sending->to('ramirezmax.mr@gmail.com');
+            }
+        );
     }
 
     /**
