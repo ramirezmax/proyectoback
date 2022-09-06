@@ -20,5 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('contact', [ContactoController::class, 'index']);
+
 //Ruta para registrar un contacto en la base de datos
 Route::post('addContact', [ContactoController::class, 'store']);
